@@ -21,6 +21,11 @@ FileName="example.tex"
 ./run_tex.sh pdflatex --interaction=nonstopmode --output-dir=./output ${FileName}
 ```
 
+Generate Resume (with custom script)
+```shell
+./build_resume.sh
+```
+
 
 ## Clean Up
 
