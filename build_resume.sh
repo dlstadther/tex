@@ -6,7 +6,7 @@ Now=$(date +"%Y%m%d-%H%M%S")
 
 TexMode="nonstopmode"
 
-Name="resume"  # TODO: have this be a CLI arg
+Name="ds_resume"  # TODO: have this be a CLI arg
 Tex="${Name}.tex"
 JobName="${Name}_${Now}"
 OutDir="./output"

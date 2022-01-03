@@ -1,0 +1,45 @@
+\documentclass[letter,10pt]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{ds_resume}
+
+% override ds_resume.tex's itemize spec
+% - add topsep
+% - shift items to the right by 1em
+\setlist[itemize]{align=parleft,left=1em..2em,topsep=0pt}
+
+%====================
+% CONTACT INFORMATION
+%====================
+\author{Dillon Stadther}
+\def\phone{(704)999-6120}
+\def\city{Apex, NC}
+\def\email{dlstadther@gmail.com}
+\def\LinkedIn{dlstadther} % linkedin.com/in/______
+\def\github{dlstadther} % github username
+\def\role{Senior Data Engineer} % JOB TITLE
+
+\begin{document}
+
+\import{sections/}{_header}
+\import{sections/}{objective}
+
+\section{Professional Experience}
+\import{sections/}{professional_experience}
+
+\section{Personal Experience}
+\import{sections/}{personal_experience}
+
+\section{Education}
+\import{sections/}{education}
+
+\section{Skills}
+\import{sections/}{skills}
+
+% make a newpage wherever it is a clean break
+% \newpage
+
+\section{Interests (non-technical)}
+\import{sections/}{interests}
+
+\end{document}

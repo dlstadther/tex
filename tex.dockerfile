@@ -7,6 +7,8 @@ RUN \
     apt-get update -q && apt-get install -qy \
         texlive \
         texlive-extra-utils \
+        texlive-fonts-recommended \
+        texlive-fonts-extra \
         python-pygments \
         gnuplot \
         make \
