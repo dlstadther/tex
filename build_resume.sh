@@ -22,7 +22,8 @@ fi
 
 # recreate docker image
 echo "# Creating image ..."
-make build
+make build  # TODO: add CLI arg for small vs large image
+# make build-texlive  # larger, pre-compiled image
 
 # generate tex output
 echo "# Building tex ..."

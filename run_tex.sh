@@ -2,6 +2,7 @@
 set -eu
 
 IMAGE=dlstadther/latex:tex
+# IMAGE=dlstadther/latex:texlive
 
 UserId=$(id -u)
 GroupId=$(id -g)
