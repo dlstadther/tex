@@ -32,4 +32,16 @@ echo "# Building tex ..."
         --interaction=nonstopmode \
         --output-dir=${OutDir} \
         --jobname=${JobName} \
-        ${Tex}
+        ${Tex} \
+    || true  # ignore exit code
+
+DatedOutput="${OutDir}/${JobName}.pdf"
+LatestFileName="resume_stadther_dillon.pdf"
+LatestOutput="${OutDir}/${LatestFileName}"
+echo "# Checking existence of ${DatedOutput} ..."
+if [[ -f "${DatedOutput}" ]]; then
+    echo "# Overwriting 'latest' (${LatestOutput}) ..."
+    cp -f ${DatedOutput} ${LatestOutput}
+else
+    echo "# File did not exist: ${DatedOutput}"
+fi
