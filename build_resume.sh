@@ -45,3 +45,6 @@ if [[ -f "${DatedOutput}" ]]; then
 else
     echo "# File did not exist: ${DatedOutput}"
 fi
+
+# spell check
+for f in **/*.tex ; do echo $f ; aspell list < $f | sort | uniq -c ; done
