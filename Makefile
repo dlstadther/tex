@@ -16,4 +16,10 @@ build-podman: tex.dockerfile
 build-podman-texlive: texlive.dockerfile
 	@podman build -f texlive.dockerfile -t $(IMAGE):texlive .
 
+gen:
+	./build_resume.sh
+
+view:
+	@open ./output/resume_stadther_dillon.pdf
+
 default: build
