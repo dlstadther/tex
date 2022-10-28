@@ -12,11 +12,21 @@ GroupId=$(id -g)
 #  --userns=keep-id - podman-specific to match runuser id
 #  --net=none - remove container network, optional
 #  --volume - mount CWD to /data (as configured in image) as read/write
-exec podman run \
+#exec podman run \
+#    --name=tex_build \
+#    --rm \
+#    --user="${UserId}:${GroupId}" \
+#    --userns=keep-id \
+#    --net=none \
+#    --volume="$PWD":/data:rw \
+#    "$IMAGE" \
+#    "$@"
+
+
+exec docker run \
     --name=tex_build \
     --rm \
     --user="${UserId}:${GroupId}" \
-    --userns=keep-id \
     --net=none \
     --volume="$PWD":/data:rw \
     "$IMAGE" \

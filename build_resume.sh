@@ -47,4 +47,5 @@ else
 fi
 
 # spell check
+# on mac: `brew install aspell`
 for f in **/*.tex ; do echo $f ; aspell list < $f | sort | uniq -c ; done
