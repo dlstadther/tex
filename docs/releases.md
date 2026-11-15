@@ -19,8 +19,15 @@ example `resume-2022.04.16.2`.
 
 ## CI checks
 
-Pull requests and pushes to `master` run the same compile as a check. The workflow saves the PDF as a workflow
-artifact.
+Pull requests and pushes to `main` run the same compile as a check. The workflow saves
+`output/resume_stadther_dillon.pdf` as a workflow artifact named `ds_resume`.
 
-The CI compile uses `xu-cheng/latex-action`, not the repository Dockerfiles. A passing CI build does not prove that
-the local image works. To test a Dockerfile change, run `make build` and `make gen` locally.
+CI builds the PDF the same way as a local build. It runs `make build` to build the image from `tex.dockerfile`, and
+then `make gen`. CI sets `SOURCE_DATE_EPOCH` to the commit time and prints the value in the job log. To get the same
+PDF bytes locally, run `make gen` with the same value:
+
+```bash
+SOURCE_DATE_EPOCH=<value from the log> FORCE_SOURCE_DATE=1 make gen
+```
+
+For a pull request, the commit is the merge commit that GitHub makes, not the head of the branch.

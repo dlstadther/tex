@@ -3,7 +3,7 @@ name: resume
 on:
   pull_request:
   push:
-    branches: [master]
+    branches: [main]
     tags: ['resume-*']
   workflow_dispatch:
 
@@ -16,16 +16,23 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.1
 
-      # The action runs latexmk with -halt-on-error, so LaTeX errors fail the job.
+      # Same image and same build script as a local `make gen`.
+      - name: Build image
+        run: make build
+
+      # SOURCE_DATE_EPOCH is the commit time, so a local build of the same commit with the same value gives the
+      # same PDF bytes. build_resume.sh exits with an error if pdflatex fails.
       - name: Compile ds_resume.tex
-        uses: xu-cheng/latex-action@4.1.0
-        with:
-          root_file: ds_resume.tex
+        run: |
+          SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)
+          export SOURCE_DATE_EPOCH FORCE_SOURCE_DATE=1
+          echo "SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH}"
+          make gen
 
       - uses: actions/upload-artifact@v7.0.2
         with:
           name: ds_resume
-          path: ds_resume.pdf
+          path: output/resume_stadther_dillon.pdf
           if-no-files-found: error
 
   release:
@@ -46,7 +53,7 @@ jobs:
           TAG: ${{ github.ref_name }}
         run: |
           asset="resume_stadther_dillon_${TAG}.pdf"
-          mv ds_resume.pdf "${asset}"
+          mv resume_stadther_dillon.pdf "${asset}"
           gh release create "${TAG}" "${asset}" \
             --repo "${GITHUB_REPOSITORY}" \
             --title "Resume ${TAG#resume-}" \
