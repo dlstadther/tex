@@ -5,6 +5,8 @@ for the spell check (`brew install aspell`).
 
 ## Files
 
+- `contact.tex`: The personal details: `\author` and the `\phone`, `\city`, `\email`, `\LinkedInUrl`,
+  `\GithubUrl`, and `\role` macros. `ds_resume.tex` loads it with `\input{contact}`.
 - `ds_resume.sty`: The style package. It defines the `\skills`, `\subtext`, and `zitemize` helpers. It is adapted
   from TimmyChan/data-science-tech-resume-template.
 - `sections/*.tex`: Each section file starts with a `\documentclass` preamble. The `standalone` package removes that
@@ -24,8 +26,8 @@ for the spell check (`brew install aspell`).
 2. It compiles a dated PDF, `output/ds_resume_<YYYYmmdd-HHMMSS>.pdf`.
 3. If pdflatex fails, it exits with an error and stops.
 4. It copies the dated PDF to `output/resume_stadther_dillon.pdf`.
-5. It runs `aspell` on `ds_resume.tex` and `sections/*.tex` and prints word counts. The spell check does not fail
-   the build.
+5. It runs `aspell` on the top-level `*.tex` files (this includes `contact.tex`) and `sections/*.tex` and prints
+   word counts. The spell check does not fail the build.
 
 Git ignores the dated PDFs. Commit `output/resume_stadther_dillon.pdf` only if the user asks for it.
 
