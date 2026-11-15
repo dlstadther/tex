@@ -369,3 +369,7 @@ fabric.properties
 
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
+
+## Generated resume output: keep only the latest PDF and OUTPUT.md
+output/*.pdf
+!output/resume_stadther_dillon.pdf
