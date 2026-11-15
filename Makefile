@@ -6,19 +6,13 @@ ENGINE ?= docker
 export ENGINE
 
 .DEFAULT_GOAL := build
-.PHONY: build build-texlive build-podman build-podman-texlive gen view clean spell
+.PHONY: build build-podman gen view clean spell
 
 build: tex.dockerfile
 	@$(ENGINE) build -f tex.dockerfile -t $(IMAGE):tex .
 
-build-texlive: texlive.dockerfile
-	@$(ENGINE) build -f texlive.dockerfile -t $(IMAGE):texlive .
-
 build-podman:
 	$(MAKE) build ENGINE=podman
-
-build-podman-texlive:
-	$(MAKE) build-texlive ENGINE=podman
 
 gen:
 	./build_resume.sh
