@@ -40,8 +40,10 @@ git push origin resume-YYYY.MM.DD
 ```
 
 The GitHub Actions workflow builds `ds_resume.tex` and creates the release. The PDF in the release is named
-`resume_stadther_dillon_<tag>.pdf`. Pull requests and pushes to `master` only build the PDF as a check. The PDF is
+`resume_stadther_dillon_<tag>.pdf`. Pull requests and pushes to `main` only build the PDF as a check. The PDF is
 saved as a workflow artifact.
+
+CI uses the same image (`tex.dockerfile`) and the same command (`make gen`) as a local build.
 
 
 ## Clean Up

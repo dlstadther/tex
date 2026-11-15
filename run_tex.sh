@@ -19,6 +19,8 @@ GroupId=$(id -g)
 #  --userns=keep-id - podman only, to match runuser id
 #  --net=none - remove container network
 #  --volume - mount CWD to /data (as configured in image) as read/write
+#  --env - pass SOURCE_DATE_EPOCH and FORCE_SOURCE_DATE from the host only if they are set;
+#          they fix the dates and document ID in the PDF
 # UserNs is unquoted on purpose: empty for docker, one flag for podman.
 # shellcheck disable=SC2086
 exec "$ENGINE" run \
@@ -26,6 +28,8 @@ exec "$ENGINE" run \
     --user="${UserId}:${GroupId}" \
     $UserNs \
     --net=none \
+    --env=SOURCE_DATE_EPOCH \
+    --env=FORCE_SOURCE_DATE \
     --volume="$PWD":/data:rw \
     "$IMAGE" \
     "$@"
