@@ -1,0 +1,53 @@
+name: resume
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+    tags: ['resume-*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      # The action runs latexmk with -halt-on-error, so LaTeX errors fail the job.
+      - name: Compile ds_resume.tex
+        uses: xu-cheng/latex-action@4.1.0
+        with:
+          root_file: ds_resume.tex
+
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: ds_resume
+          path: ds_resume.pdf
+          if-no-files-found: error
+
+  release:
+    # Runs on a resume-* tag push, or on a manual run started from a tag.
+    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'resume-')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8.0.2
+        with:
+          name: ds_resume
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          asset="resume_stadther_dillon_${TAG}.pdf"
+          mv ds_resume.pdf "${asset}"
+          gh release create "${TAG}" "${asset}" \
+            --repo "${GITHUB_REPOSITORY}" \
+            --title "Resume ${TAG#resume-}" \
+            --notes "Resume PDF built from tag ${TAG}."

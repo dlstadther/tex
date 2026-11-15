@@ -5,9 +5,10 @@ Build tool and artifacts for LaTeX documents.
 
 ## Install
 
-To avoid installing tex dependencies on the host machine, we'll use containers and mounted volume to run the build in a self-contained environment.
+To avoid installing tex dependencies on the host machine, we use containers and a mounted volume to run the build in
+a self-contained environment.
 
-Setup to use `podman`, but can be easily updated to use `docker`.
+Docker is the default container tool. Podman also works through the Makefile targets.
 
 ## Build
 
@@ -27,17 +28,36 @@ Generate Resume (with custom script)
 ```
 
 
+## Releases
+
+Dated resume PDFs are no longer committed to the repository. The latest PDF stays at
+`output/resume_stadther_dillon.pdf`. Each released version is a GitHub Release with the PDF attached.
+
+To cut a release, push a tag that starts with `resume-`:
+```shell
+git tag resume-YYYY.MM.DD
+git push origin resume-YYYY.MM.DD
+```
+
+The GitHub Actions workflow builds `ds_resume.tex` and creates the release. The PDF in the release is named
+`resume_stadther_dillon_<tag>.pdf`. Pull requests and pushes to `master` only build the PDF as a check. The PDF is
+saved as a workflow artifact.
+
+
 ## Clean Up
 
-Sometimes image builds or container executions may fail if given improper input. In these cases, the follow commands may be required to get back to a clean slate.
+Sometimes image builds or container executions may fail if given improper input. In these cases, the follow commands may
+be required to get back to a clean slate.
 
 ```shell
 # stop all containers
-podman stop $(podman ps -q)
+docker stop $(docker ps -q)
 
 # delete containers
-podman rm $(podman ps -a -q)
+docker rm $(docker ps -a -q)
 
 # delete dangling images
-podman rmi -f $(podman images -f "dangling=true" -q)
+docker rmi -f $(docker images -f "dangling=true" -q)
 ```
+
+For podman, use `podman` in place of `docker` in these commands.
