@@ -2,19 +2,23 @@ NS = dlstadther
 REPO = latex
 IMAGE = $(NS)/$(REPO)
 
-.PHONY: build
+ENGINE ?= docker
+export ENGINE
+
+.DEFAULT_GOAL := build
+.PHONY: build build-texlive build-podman build-podman-texlive gen view clean spell
 
 build: tex.dockerfile
-	@docker build -f tex.dockerfile -t $(IMAGE):tex .
+	@$(ENGINE) build -f tex.dockerfile -t $(IMAGE):tex .
 
 build-texlive: texlive.dockerfile
-	@docker build -f texlive.dockerfile -t $(IMAGE):texlive .
+	@$(ENGINE) build -f texlive.dockerfile -t $(IMAGE):texlive .
 
-build-podman: tex.dockerfile
-	@podman build -f tex.dockerfile -t $(IMAGE):tex .
+build-podman:
+	$(MAKE) build ENGINE=podman
 
-build-podman-texlive: texlive.dockerfile
-	@podman build -f texlive.dockerfile -t $(IMAGE):texlive .
+build-podman-texlive:
+	$(MAKE) build-texlive ENGINE=podman
 
 gen:
 	./build_resume.sh
@@ -22,4 +26,8 @@ gen:
 view:
 	@open ./output/resume_stadther_dillon.pdf
 
-default: build
+clean:
+	rm -f output/*.aux output/*.log output/*.out
+
+spell:
+	for f in *.tex sections/*.tex; do echo "$$f"; aspell --mode=tex list < "$$f" | sort | uniq -c; done
