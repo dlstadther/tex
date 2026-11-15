@@ -35,7 +35,9 @@ Read the file that matches the task:
 | Build details, container images, environment variables, caveats | [docs/build.md](docs/build.md) |
 | Publish a resume version, CI workflow | [docs/releases.md](docs/releases.md) |
 | Prove that a change does not alter the PDF | [docs/pdf-comparison.md](docs/pdf-comparison.md) |
+| Write commit messages and PR titles | [docs/commits.md](docs/commits.md) |
 
 ## Commits
 
-Use `resume` as the commit scope for content changes that the user makes.
+Use Conventional Commits, `type(scope): message`, for every commit and every squash-merge PR title. Use `resume` as
+the scope for resume content changes that the user makes. See [docs/commits.md](docs/commits.md) for the full rules.
