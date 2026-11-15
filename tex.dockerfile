@@ -1,20 +1,16 @@
-FROM debian:buster
+FROM debian:bookworm
 
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
-RUN \
-    # install full texlive
-    apt-get update -q && apt-get install -qy \
+# texlive-latex-extra: moresize, anyfontsize, titlesec, enumitem, standalone, import, csquotes
+# texlive-fonts-extra: sourcesanspro
+# texlive (base, recommended): babel, geometry, hyperref, xcolor, pdflatex
+RUN apt-get update -q && apt-get install -qy --no-install-recommends \
         texlive \
-        texlive-extra-utils \
+        texlive-latex-extra \
         texlive-fonts-recommended \
         texlive-fonts-extra \
-        python-pygments \
-        gnuplot \
-        make \
-        git \
-    # cleanup
-    && apt-get autoclean && apt-get clean \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # link local tex directory to container
@@ -23,5 +19,4 @@ RUN mkdir ${TEXSOURCE}
 VOLUME ${TEXSOURCE}
 WORKDIR ${TEXSOURCE}
 
-# enter bash if no other cmd is provided
-CMD ["/bin/bash", "-c", "sleep 300"]
+CMD ["pdflatex", "--version"]
