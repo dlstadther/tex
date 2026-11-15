@@ -6,7 +6,7 @@ ENGINE ?= docker
 export ENGINE
 
 .DEFAULT_GOAL := build
-.PHONY: build build-podman gen view clean spell
+.PHONY: build build-podman gen view clean spell release
 
 build: tex.dockerfile
 	@$(ENGINE) build -f tex.dockerfile -t $(IMAGE):tex .
@@ -25,3 +25,8 @@ clean:
 
 spell:
 	for f in *.tex sections/*.tex; do echo "$$f"; aspell --mode=tex list < "$$f" | sort | uniq -c; done
+
+# Tags today's release (resume-YYYY.MM.DD[.N]) and pushes it; CI publishes the GitHub Release.
+# DRY_RUN=1 prints the tag only.
+release:
+	./release.sh
