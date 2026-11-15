@@ -33,15 +33,20 @@ Generate Resume (with custom script)
 Dated resume PDFs are no longer committed to the repository. The latest PDF stays at
 `output/resume_stadther_dillon.pdf`. Each released version is a GitHub Release with the PDF attached.
 
-To cut a release, push a tag that starts with `resume-`:
+To publish a release, run this command from an up-to-date `main` with a clean working tree:
 ```shell
-git tag resume-YYYY.MM.DD
-git push origin resume-YYYY.MM.DD
+make release            # create and push today's tag
+DRY_RUN=1 make release  # print the tag only
 ```
 
-The GitHub Actions workflow builds `ds_resume.tex` and creates the release. The PDF in the release is named
-`resume_stadther_dillon_<tag>.pdf`. Pull requests and pushes to `main` only build the PDF as a check. The PDF is
-saved as a workflow artifact.
+The command creates a dated tag, `resume-YYYY.MM.DD`, and pushes it. If a tag for today exists, it adds a suffix:
+`.1`, then `.2`, and so on. The tag does not use semantic versioning.
+
+The GitHub Actions workflow checks the tag format, builds `ds_resume.tex`, and creates the release. The PDF in the
+release is named `resume_stadther_dillon_<tag>.pdf`. Pull requests and pushes to `main` only build the PDF as a
+check. The PDF is saved as a workflow artifact.
+
+See [docs/releases.md](docs/releases.md) for the full steps.
 
 CI uses the same image (`tex.dockerfile`) and the same command (`make gen`) as a local build.
 

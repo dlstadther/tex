@@ -14,6 +14,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # Release tags are resume-YYYY.MM.DD, with .1, .2, ... for more releases on the same day. See release.sh.
+      - name: Check release tag format
+        if: github.ref_type == 'tag'
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          if ! echo "${TAG}" | grep -qE '^resume-[0-9]{4}\.[0-9]{2}\.[0-9]{2}(\.[1-9][0-9]*)?$'; then
+            echo "::error::Tag '${TAG}' does not match resume-YYYY.MM.DD or resume-YYYY.MM.DD.N. Run 'make release' to create release tags."
+            exit 1
+          fi
+          echo "Tag '${TAG}' has the release format."
+
       - uses: actions/checkout@v7.0.1
 
       # Same image and same build script as a local `make gen`.
